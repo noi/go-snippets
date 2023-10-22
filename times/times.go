@@ -15,7 +15,7 @@ const (
 	// but if the original time is the end of the month,
 	// the result will also be the end of the month.
 	// e.g. 3/31 + 1 month is 4/30, 4/30 + 1 month is 5/31
-	PreserveEndOfMonth
+	PreserveEndDayOfMonth
 )
 
 var JST *time.Location
@@ -51,7 +51,7 @@ func addYearsAndMonths(t time.Time, years, months int, mode AddMode) time.Time {
 	}
 	day := t.Day()
 	year, month, dayLimit := t.AddDate(years, months+1, -t.Day()).Date()
-	if day > dayLimit || mode == PreserveEndOfMonth && t.Month() != t.AddDate(0, 0, 1).Month() {
+	if day > dayLimit || mode == PreserveEndDayOfMonth && t.Month() != t.AddDate(0, 0, 1).Month() {
 		day = dayLimit
 	}
 	hour, min, sec := t.Clock()
