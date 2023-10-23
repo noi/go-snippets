@@ -48,6 +48,15 @@ func TestAddYears(t *testing.T) {
 			want: str2jst(t, "2007-03-01 12:34:56.7"),
 		},
 		{
+			name: "with NormalizeExcessDays (negative & normalized)",
+			args: args{
+				t:     str2jst(t, "2004-02-29 12:34:56.7"),
+				years: -3,
+				mode:  times.NormalizeExcessDays,
+			},
+			want: str2jst(t, "2001-03-01 12:34:56.7"),
+		},
+		{
 			name: "with NormalizeExcessDays (not normalized)",
 			args: args{
 				t:     str2jst(t, "2001-02-27 12:34:56.7"),
@@ -55,6 +64,15 @@ func TestAddYears(t *testing.T) {
 				mode:  times.NormalizeExcessDays,
 			},
 			want: str2jst(t, "2004-02-27 12:34:56.7"),
+		},
+		{
+			name: "with NormalizeExcessDays (negative & not normalized)",
+			args: args{
+				t:     str2jst(t, "2004-02-27 12:34:56.7"),
+				years: -3,
+				mode:  times.NormalizeExcessDays,
+			},
+			want: str2jst(t, "2001-02-27 12:34:56.7"),
 		},
 		{
 			name: "with TruncateExcessDays (truncated)",
@@ -66,10 +84,28 @@ func TestAddYears(t *testing.T) {
 			want: str2jst(t, "2007-02-28 12:34:56.7"),
 		},
 		{
+			name: "with TruncateExcessDays (negative & truncated)",
+			args: args{
+				t:     str2jst(t, "2004-02-29 12:34:56.7"),
+				years: -3,
+				mode:  times.TruncateExcessDays,
+			},
+			want: str2jst(t, "2001-02-28 12:34:56.7"),
+		},
+		{
 			name: "with TruncateExcessDays (not truncated & not preserved)",
 			args: args{
 				t:     str2jst(t, "2001-02-28 12:34:56.7"),
 				years: 3,
+				mode:  times.TruncateExcessDays,
+			},
+			want: str2jst(t, "2004-02-28 12:34:56.7"),
+		},
+		{
+			name: "with TruncateExcessDays (negative & not truncated & not preserved)",
+			args: args{
+				t:     str2jst(t, "2007-02-28 12:34:56.7"),
+				years: -3,
 				mode:  times.TruncateExcessDays,
 			},
 			want: str2jst(t, "2004-02-28 12:34:56.7"),
@@ -84,10 +120,28 @@ func TestAddYears(t *testing.T) {
 			want: str2jst(t, "2007-02-28 12:34:56.7"),
 		},
 		{
+			name: "with PreserveEndDayOfMonth (negative & truncated)",
+			args: args{
+				t:     str2jst(t, "2004-02-29 12:34:56.7"),
+				years: -3,
+				mode:  times.PreserveEndDayOfMonth,
+			},
+			want: str2jst(t, "2001-02-28 12:34:56.7"),
+		},
+		{
 			name: "with PreserveEndDayOfMonth (preserved)",
 			args: args{
 				t:     str2jst(t, "2001-02-28 12:34:56.7"),
 				years: 3,
+				mode:  times.PreserveEndDayOfMonth,
+			},
+			want: str2jst(t, "2004-02-29 12:34:56.7"),
+		},
+		{
+			name: "with PreserveEndDayOfMonth (negative & preserved)",
+			args: args{
+				t:     str2jst(t, "2007-02-28 12:34:56.7"),
+				years: -3,
 				mode:  times.PreserveEndDayOfMonth,
 			},
 			want: str2jst(t, "2004-02-29 12:34:56.7"),
@@ -101,7 +155,15 @@ func TestAddYears(t *testing.T) {
 			},
 			want: str2jst(t, "2004-02-27 12:34:56.7"),
 		},
-		// no subtraction tests...
+		{
+			name: "with PreserveEndDayOfMonth (negative & not truncated & not preserved)",
+			args: args{
+				t:     str2jst(t, "2004-02-27 12:34:56.7"),
+				years: -3,
+				mode:  times.PreserveEndDayOfMonth,
+			},
+			want: str2jst(t, "2001-02-27 12:34:56.7"),
+		},
 	}
 
 	for _, tt := range tests {
@@ -136,6 +198,15 @@ func TestAddMonths(t *testing.T) {
 			want: str2jst(t, "2005-03-01 12:34:56.7"),
 		},
 		{
+			name: "with NormalizeExcessDays (negative & normalized & year changed)",
+			args: args{
+				t:      str2jst(t, "2004-02-29 12:34:56.7"),
+				months: -12,
+				mode:   times.NormalizeExcessDays,
+			},
+			want: str2jst(t, "2003-03-01 12:34:56.7"),
+		},
+		{
 			name: "with NormalizeExcessDays (not normalized)",
 			args: args{
 				t:      str2jst(t, "2004-02-27 12:34:56.7"),
@@ -143,6 +214,15 @@ func TestAddMonths(t *testing.T) {
 				mode:   times.NormalizeExcessDays,
 			},
 			want: str2jst(t, "2004-05-27 12:34:56.7"),
+		},
+		{
+			name: "with NormalizeExcessDays (negative & not normalized)",
+			args: args{
+				t:      str2jst(t, "2004-05-27 12:34:56.7"),
+				months: -3,
+				mode:   times.NormalizeExcessDays,
+			},
+			want: str2jst(t, "2004-02-27 12:34:56.7"),
 		},
 		{
 			name: "with TruncateExcessDays (truncated & year changed)",
@@ -154,6 +234,15 @@ func TestAddMonths(t *testing.T) {
 			want: str2jst(t, "2005-02-28 12:34:56.7"),
 		},
 		{
+			name: "with TruncateExcessDays (negative & truncated & year changed)",
+			args: args{
+				t:      str2jst(t, "2004-02-29 12:34:56.7"),
+				months: -12,
+				mode:   times.TruncateExcessDays,
+			},
+			want: str2jst(t, "2003-02-28 12:34:56.7"),
+		},
+		{
 			name: "with TruncateExcessDays (not truncated & not preserved)",
 			args: args{
 				t:      str2jst(t, "2003-02-28 12:34:56.7"),
@@ -161,6 +250,15 @@ func TestAddMonths(t *testing.T) {
 				mode:   times.TruncateExcessDays,
 			},
 			want: str2jst(t, "2003-05-28 12:34:56.7"),
+		},
+		{
+			name: "with TruncateExcessDays (negative & not truncated & not preserved)",
+			args: args{
+				t:      str2jst(t, "2003-02-28 12:34:56.7"),
+				months: -1,
+				mode:   times.TruncateExcessDays,
+			},
+			want: str2jst(t, "2003-01-28 12:34:56.7"),
 		},
 		{
 			name: "with PreserveEndDayOfMonth (truncated & year changed)",
@@ -172,10 +270,28 @@ func TestAddMonths(t *testing.T) {
 			want: str2jst(t, "2005-02-28 12:34:56.7"),
 		},
 		{
+			name: "with PreserveEndDayOfMonth (negative & truncated & year changed)",
+			args: args{
+				t:      str2jst(t, "2004-02-29 12:34:56.7"),
+				months: -12,
+				mode:   times.PreserveEndDayOfMonth,
+			},
+			want: str2jst(t, "2003-02-28 12:34:56.7"),
+		},
+		{
 			name: "with PreserveEndDayOfMonth (preserved & year changed)",
 			args: args{
 				t:      str2jst(t, "2003-02-28 12:34:56.7"),
 				months: 12,
+				mode:   times.PreserveEndDayOfMonth,
+			},
+			want: str2jst(t, "2004-02-29 12:34:56.7"),
+		},
+		{
+			name: "with PreserveEndDayOfMonth (negative & preserved & year changed)",
+			args: args{
+				t:      str2jst(t, "2005-02-28 12:34:56.7"),
+				months: -12,
 				mode:   times.PreserveEndDayOfMonth,
 			},
 			want: str2jst(t, "2004-02-29 12:34:56.7"),
@@ -189,7 +305,15 @@ func TestAddMonths(t *testing.T) {
 			},
 			want: str2jst(t, "2003-05-27 12:34:56.7"),
 		},
-		// no subtraction tests...
+		{
+			name: "with PreserveEndDayOfMonth (negative & not truncated & not preserved)",
+			args: args{
+				t:      str2jst(t, "2003-02-27 12:34:56.7"),
+				months: -1,
+				mode:   times.PreserveEndDayOfMonth,
+			},
+			want: str2jst(t, "2003-01-27 12:34:56.7"),
+		},
 	}
 
 	for _, tt := range tests {
@@ -222,12 +346,28 @@ func TestAddDays(t *testing.T) {
 			want: str2jst(t, "2000-01-04 12:34:56.7"),
 		},
 		{
+			name: "day changed (negative)",
+			args: args{
+				t:    str2jst(t, "2000-01-04 12:34:56.7"),
+				days: -3,
+			},
+			want: str2jst(t, "2000-01-01 12:34:56.7"),
+		},
+		{
 			name: "month changed",
 			args: args{
 				t:    str2jst(t, "2000-01-30 12:34:56.7"),
 				days: 3,
 			},
 			want: str2jst(t, "2000-02-02 12:34:56.7"),
+		},
+		{
+			name: "month changed (negative)",
+			args: args{
+				t:    str2jst(t, "2000-02-02 12:34:56.7"),
+				days: -3,
+			},
+			want: str2jst(t, "2000-01-30 12:34:56.7"),
 		},
 		{
 			name: "year changed",
@@ -237,7 +377,14 @@ func TestAddDays(t *testing.T) {
 			},
 			want: str2jst(t, "2001-01-02 12:34:56.7"),
 		},
-		// no subtraction tests...
+		{
+			name: "year changed (negative)",
+			args: args{
+				t:    str2jst(t, "2001-01-02 12:34:56.7"),
+				days: -3,
+			},
+			want: str2jst(t, "2000-12-30 12:34:56.7"),
+		},
 	}
 
 	for _, tt := range tests {
