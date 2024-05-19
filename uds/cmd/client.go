@@ -50,6 +50,5 @@ var clientCmd = &cobra.Command{
 
 func init() {
 	clientCmd.Flags().String("unix-socket", "", "")
-	clientCmd.Flags().String("action", "", "")
 	rootCmd.AddCommand(clientCmd)
 }
