@@ -1,0 +1,9 @@
+when:
+  - event: push
+    branch: foo
+
+steps:
+  - name: build
+    image: debian
+    commands:
+      - echo "Hello"
